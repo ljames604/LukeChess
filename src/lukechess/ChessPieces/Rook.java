@@ -29,9 +29,9 @@ public class Rook extends ChessPiece
     public static void populate(ChessPiece[][] board)
     {
         //top left
-        board[0][0] = new Rook(ChessPiece.COLOR.WHITE, 0,0);
+        board[0][0] = new Rook(ChessPiece.COLOR.WHITE, 0,0); //0,0
         //top right
-        board[0][7] = new Rook(ChessPiece.COLOR.WHITE, 0,7);
+        board[0][7] = new Rook(ChessPiece.COLOR.WHITE, 0,7); //0,7
         //bottom left
         board[7][0] = new Rook(ChessPiece.COLOR.BLACK, 7,0); //7,0
         //bottom right

@@ -30,9 +30,9 @@ public class King extends ChessPiece
     public static void populate(ChessPiece[][] board)
     {
         //top left
-        board[0][4] = new King(ChessPiece.COLOR.WHITE, 0,4);
+        board[0][4] = new King(ChessPiece.COLOR.WHITE, 0,4); //0,4
         //bottom right
-        board[7][4] = new King(ChessPiece.COLOR.BLACK, 7,4); //7,4
+        board[3][4] = new King(ChessPiece.COLOR.BLACK, 3,4); //7,4
     }
     
     

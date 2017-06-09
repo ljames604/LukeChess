@@ -66,7 +66,9 @@ public abstract class ChessPiece
         //move the peice to the new location and save whatever is in the new postion so we can replace it after
         ChessPiece captured = move(board, newPosition);
  
-        //check bishop/queen
+        /************************
+         ***** BISHOP/QUEEN *****
+         ************************/
         int temp = 1;
         for(int x=-1; x<=1; x+=2)
         {
@@ -75,8 +77,8 @@ public abstract class ChessPiece
                 try
                 {
                     while(board[king.position.getX()+x*temp][king.position.getY()+y*temp] == null) { temp++; }
-                    int nextX = this.position.getX()+x*temp;
-                    int nextY = this.position.getY()+y*temp;
+                    int nextX = king.position.getX()+x*temp;
+                    int nextY = king.position.getY()+y*temp;
                     //String aaa = board[nextX][nextY].getAcsiiCode();
                     if(board[nextX][nextY].color != this.color)
                     {
@@ -92,6 +94,55 @@ public abstract class ChessPiece
             temp = 1;
         }
         
+        /**********************
+         ***** ROOK/QUEEN *****
+         **********************/
+        //check vertical
+        temp = 1;
+        for(int x=-1; x<=1; x+=2)
+        {
+            //check vertical
+            try
+            {
+                while(board[king.position.getX()+x*temp][king.position.getY()] == null) { temp++; }
+                int nextX = king.position.getX()+x*temp;
+                int nextY = king.position.getY();
+                if(board[nextX][nextY].color != this.color)
+                {
+                    if("R".equals(board[nextX][nextY].getAcsiiCode()) || "Q".equals(board[nextX][nextY].getAcsiiCode()))
+                    {
+                        //the king is in jeopardy. reset piece locations
+                        resetPositions(board, originalPosition, newPosition, captured);
+                        return false;
+                    }
+                }
+            }catch(IndexOutOfBoundsException e) {}
+            temp = 1;
+        }
+        //check horizontal
+        temp = 1;
+        for(int y=-1; y<=1; y+=2)
+        {
+            try
+            {
+                while(board[king.position.getX()][king.position.getY()+y*temp] == null) { temp++; }
+                int nextX = king.position.getX();
+                int nextY = king.position.getY()+y*temp;
+                if(board[nextX][nextY].color != this.color)
+                {
+                    if("R".equals(board[nextX][nextY].getAcsiiCode()) || "Q".equals(board[nextX][nextY].getAcsiiCode()))
+                    {
+                        //the king is in jeopardy. reset piece locations
+                        printBoard(board);
+                        resetPositions(board, originalPosition, newPosition, captured);
+                        return false;
+                    }
+                }
+            }catch(IndexOutOfBoundsException e) {}
+            temp = 1;
+        }
+        
+        printBoard(board);
         //the king is safe. reset piece locations
         resetPositions(board, originalPosition, newPosition, captured);
         return true;
