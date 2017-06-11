@@ -23,66 +23,83 @@ public class LukeChess {
         
         ChessBoard b = new ChessBoard();
         ChessPiece[][] board = b.board;
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        ChessPiece king = findBlackKing(board);
+        List<Position> availablePositions = king.getAvailableMoves(board);
+    
         for(int i=0; i<64; i++)
         {
-            if(board[i/8][i%8] != null && board[i/8][i%8].getColor() == ChessPiece.COLOR.BLACK)
+            if(i%8 ==0)
+                System.out.println();
+                            
+            int x = i/8;
+            int y = i%8;
+               
+            boolean bingo = false;
+            for (Position pos : availablePositions)
             {
-                ChessPiece piece = board[i/8][i%8];
-                if(piece != null && "A".equals(piece.getAcsiiCode()) && piece.getColor() == ChessPiece.COLOR.BLACK)
+                if(pos.getX() == x && pos.getY() == y)
                 {
-                    List<Position> p = piece.getAvailableMoves(board);
-                    
-                    for (int x=0; x<board.length; x++)
+                    bingo = true;
+                    if(board[pos.getX()][pos.getY()] != null)
                     {
-                       for (int y=0; y<board[0].length; y++)
-                       {
-                            boolean bingo = false;
-                            for (Position pos : p)
-                            {
-                                if(pos.getX() == x && pos.getY() == y)
-                                {
-                                    bingo = true;
-                                    if(board[x][y] != null)
-                                    {
-                                        System.out.print("$" + " ");
-                                    }
-                                    else
-                                    {
-                                        System.out.print("-" + " ");
-                                    }
-                                }
-                            }
-                            if(bingo)
-                            {
-                                continue;
-                            }
-                                
-                            if(board[x][y] == null)
-                            {
-                                System.out.print("*" + " ");
-                            }
-                           
-                            else
-                            {
-                                System.out.print(board[x][y].getAcsiiCode() + " ");
-                            }
-                                
-                           
-                       }
-                       System.out.println();
+                        System.out.print("$" + " ");
+                        break;
+                    }
+                    else
+                    {
+                        System.out.print("-" + " ");
+                        break;
                     }
                 }
-//                Position p = board[i/8][i%8].getPosition();
-//                System.out.print(p.getX());
-//                System.out.print(p.getY());
-                //String bingo = board[i/8][i%8].getAcsiiCode();
-                //System.out.print(bingo);
-                //System.out.print(board[i/8][i%8].getClass());
-                //System.out.print("---");
-                // bingo = board[i/8][i%8].getAcsiiCode();
-                //System.out.print(bingo);
+            }
+            if(!bingo)
+            {
+                if(board[i/8][i%8] == null)
+                {
+                    System.out.print("*" + " ");
+                    //continue;
+                }
+                else
+                {
+                    System.out.print(board[i/8][i%8].getAcsiiCode() + " ");
+                }
             }
         }
     }
     
+    
+    /**
+     * Find this sides  //TODO THIS METHOD SHOULD NOT EXIST! THE POSITION OF THE KING SHOULD BE SAVED IN THE BOARD
+     * @param board
+     * @return ChessPiece
+     */
+    public static ChessPiece findBlackKing(ChessPiece[][] board)
+    {
+        ChessPiece king = null;
+        for(int i=0; i<64; i++)
+        {
+            int x = i/8;
+            int y = i%8;
+            if(board[x][y] != null && "A".equals(board[x][y].getAcsiiCode()) && board[x][y].getColor() == ChessPiece.COLOR.BLACK)
+            {
+                king = board[x][y];
+                break;
+            }
+        }
+        return king;
+    }
 }

@@ -1,7 +1,7 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this indexlate file, choose Tools | Templates
+ * and open the indexlate in the editor.
  */
 package lukechess.ChessPieces;
 
@@ -69,16 +69,17 @@ public abstract class ChessPiece
         /************************
          ***** BISHOP/QUEEN *****
          ************************/
-        int temp = 1;
+        int index = 1;
         for(int x=-1; x<=1; x+=2)
         {
             for(int y=-1; y<=1; y+=2)
             {
                 try
                 {
-                    while(board[king.position.getX()+x*temp][king.position.getY()+y*temp] == null) { temp++; }
-                    int nextX = king.position.getX()+x*temp;
-                    int nextY = king.position.getY()+y*temp;
+                    //find the next occupied diagnal position
+                    while(board[king.position.getX()+x*index][king.position.getY()+y*index] == null) { index++; }
+                    int nextX = king.position.getX()+x*index;
+                    int nextY = king.position.getY()+y*index;
                     //String aaa = board[nextX][nextY].getAcsiiCode();
                     if(board[nextX][nextY].color != this.color)
                     {
@@ -91,21 +92,22 @@ public abstract class ChessPiece
                     }
                 } catch(IndexOutOfBoundsException e) {}
             }
-            temp = 1;
+            index = 1;
         }
         
         /**********************
          ***** ROOK/QUEEN *****
          **********************/
         //check vertical
-        temp = 1;
+        index = 1;
         for(int x=-1; x<=1; x+=2)
         {
             //check vertical
             try
             {
-                while(board[king.position.getX()+x*temp][king.position.getY()] == null) { temp++; }
-                int nextX = king.position.getX()+x*temp;
+                //find the next occupied vertical position
+                while(board[king.position.getX()+x*index][king.position.getY()] == null) { index++; }
+                int nextX = king.position.getX()+x*index;
                 int nextY = king.position.getY();
                 if(board[nextX][nextY].color != this.color)
                 {
@@ -117,32 +119,100 @@ public abstract class ChessPiece
                     }
                 }
             }catch(IndexOutOfBoundsException e) {}
-            temp = 1;
+            index = 1;
         }
         //check horizontal
-        temp = 1;
+        index = 1;
         for(int y=-1; y<=1; y+=2)
         {
             try
             {
-                while(board[king.position.getX()][king.position.getY()+y*temp] == null) { temp++; }
+                //find the next occupied horizontal position
+                while(board[king.position.getX()][king.position.getY()+y*index] == null) { index++; }
                 int nextX = king.position.getX();
-                int nextY = king.position.getY()+y*temp;
+                int nextY = king.position.getY()+y*index;
                 if(board[nextX][nextY].color != this.color)
                 {
                     if("R".equals(board[nextX][nextY].getAcsiiCode()) || "Q".equals(board[nextX][nextY].getAcsiiCode()))
                     {
                         //the king is in jeopardy. reset piece locations
-                        printBoard(board);
                         resetPositions(board, originalPosition, newPosition, captured);
                         return false;
                     }
                 }
             }catch(IndexOutOfBoundsException e) {}
-            temp = 1;
+            index = 1;
         }
         
-        printBoard(board);
+        /**********************
+         ******* KNIGHT *******
+         **********************/
+        for(int x=-1; x<=1; x+=2)
+        {
+            for(int y=-1; y<=1; y+=2)
+            {
+                int nextX = king.position.getX()+x*2;
+                int nextY = king.position.getY()+y;
+                try
+                {
+                    if(board[nextX][nextY] != null)
+                    {
+                        if(board[nextX][nextY].color != this.color && "K".equals(board[nextX][nextY].getAcsiiCode()))
+                        {
+                            //the king is in jeopardy. reset piece locations
+                            resetPositions(board, originalPosition, newPosition, captured);
+                            return false;
+                        }
+                    }
+                }catch(IndexOutOfBoundsException e) {}
+                
+                nextX = king.position.getX()+x;
+                nextY = king.position.getY()+y*2;
+                try
+                {
+                    if(board[nextX][nextY] != null)
+                    {
+                        if(board[nextX][nextY].color != king.color && "K".equals(board[nextX][nextY].getAcsiiCode()))
+                        {
+                            //the king is in jeopardy. reset piece locations
+                            resetPositions(board, originalPosition, newPosition, captured);
+                            return false;
+                        }
+                    }
+                }catch(IndexOutOfBoundsException e) {}
+            }
+        }
+        
+        /**********************
+         ******** PAWN ********
+         **********************/
+        for(int horizontal=-1; horizontal<=1; horizontal+=2)
+        {
+            if(king.color == COLOR.BLACK)
+            {
+                int nextX = king.position.getX()-1;
+                int nextY = king.position.getY()+horizontal;
+                if(board[nextX][nextY] != null && king.color != board[nextX][nextY].color)
+                {
+                    //the king is in jeopardy. reset piece locations
+                    resetPositions(board, originalPosition, newPosition, captured);
+                    return false;
+                }
+            }
+            else
+            {
+                int nextX = king.position.getX()+1;
+                int nextY = king.position.getY()+horizontal;
+                if(board[nextX][nextY] != null && king.color != board[nextX][nextY].color)
+                {
+                    //the king is in jeopardy. reset piece locations
+                    resetPositions(board, originalPosition, newPosition, captured);
+                    return false;
+                }
+            }
+        }
+
+        
         //the king is safe. reset piece locations
         resetPositions(board, originalPosition, newPosition, captured);
         return true;
@@ -183,7 +253,7 @@ public abstract class ChessPiece
     }
     
     /**
-     * Find this sides king
+     * Find this sides  //TODO THIS METHOD SHOULD NOT EXIST! THE POSITION OF THE KING SHOULD BE SAVED IN THE BOARD
      * @param board
      * @return ChessPiece
      */
