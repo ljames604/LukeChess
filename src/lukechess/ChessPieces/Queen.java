@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class Queen extends ChessPiece
 {
+    public static String acsiiCode;
+    
     public Queen(COLOR color, int x, int y)
     {
         Position position = new Position(x, y);
@@ -80,6 +82,13 @@ public class Queen extends ChessPiece
             }
         }
         return available;
+    }
+    
+    //get the piece's ASCii code
+    @Override
+    public String getAcsiiCode()
+    {
+        return this.acsiiCode;
     }
     
 }

@@ -14,6 +14,8 @@ import java.util.ArrayList;
  */
 public class Rook extends ChessPiece
 {
+    public static String acsiiCode;
+    
     public Rook(COLOR color, int x, int y)
     {
         Position position = new Position(x, y);
@@ -103,5 +105,11 @@ public class Rook extends ChessPiece
         return available;
     }
     
+    //get the piece's ASCii code
+    @Override
+    public String getAcsiiCode()
+    {
+        return this.acsiiCode;
+    }
         
 }

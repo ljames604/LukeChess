@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class Bishop extends ChessPiece
 {
+    public static String acsiiCode;
+    
     public Bishop(COLOR color, int x, int y)
     {
         Position position = new Position(x, y);
@@ -82,5 +84,12 @@ public class Bishop extends ChessPiece
             }
         }
         return available;
+    }
+    
+    //get the piece's ASCii code
+    @Override
+    public String getAcsiiCode()
+    {
+        return this.acsiiCode;
     }
 }

@@ -14,6 +14,8 @@ import java.util.ArrayList;
  */
 public class Pawn extends ChessPiece
 {
+    public static String acsiiCode;
+    
     public Pawn(COLOR color, int x, int y)
     {
         Position position = new Position(x, y);
@@ -45,6 +47,51 @@ public class Pawn extends ChessPiece
     @Override
     public List<Position> getAvailableMoves(ChessPiece[][] board)
     {
+        if(this.color == COLOR.BLACK)
+        {
+            if(board[this.position.getX()-1][this.position.getY()] == null)
+            {
+                //add to available positions
+            }
+        }
+        else
+        {
+            if(board[this.position.getX()+1][this.position.getY()] == null)
+            {
+                //add to available positions
+            }
+        }
+        for(int horizontal=-1; horizontal<=1; horizontal+=2)
+        {  
+            try
+            {
+                if(this.color == COLOR.BLACK)
+                {
+                    int nextX = this.position.getX()-1;
+                    int nextY = this.position.getY()+horizontal;
+                    if(board[nextX][nextY] != null && board[nextX][nextY].color != this.color)
+                    {
+                        //add to available position
+                    }
+                }
+                else
+                {
+                    int nextX = this.position.getX()+1;
+                    int nextY = this.position.getY()+horizontal;
+                    if(board[nextX][nextY] != null && board[nextX][nextY].color != this.color)
+                    {
+                        //add to available position
+                    }
+                }
+            }catch(IndexOutOfBoundsException e) {}
+        }
         return new ArrayList<Position>();
+    }
+    
+    //get the piece's ASCii code
+    @Override
+    public String getAcsiiCode()
+    {
+        return this.acsiiCode;
     }
 }

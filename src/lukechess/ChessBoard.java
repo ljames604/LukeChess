@@ -58,8 +58,12 @@ public class ChessBoard
         return allMoves;
     }
     
+    /**
+     * Output the contents of the board for debugging
+     * @param board 
+     */
     public void printBoard()
-    {          
+    {                        
         for (int x=0; x<board.length; x++)
         {
            for (int y=0; y<board[0].length; y++)
@@ -76,5 +80,7 @@ public class ChessBoard
            }
            System.out.println();
         }
+        
+        System.out.println();System.out.println();System.out.println();System.out.println();
     }
 }

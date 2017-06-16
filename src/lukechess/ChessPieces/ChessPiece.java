@@ -13,14 +13,13 @@ import java.util.List;
 public abstract class ChessPiece
 {
     public enum COLOR { BLACK, WHITE }
-    protected String acsiiCode;
     protected Position position;
     protected ChessPiece.COLOR color;
     protected boolean alive;
     protected int value;
     
     public abstract List<Position> getAvailableMoves(ChessPiece[][] board);
-    
+    public abstract String getAcsiiCode();
      
     /**
      * Get the pieces color
@@ -29,15 +28,6 @@ public abstract class ChessPiece
     public COLOR getColor()
     {
         return this.color;
-    }
-    
-    /**
-     * Get the pieces ACSI code
-     * @return String
-     */
-    public String getAcsiiCode()
-    {
-        return this.acsiiCode;
     }
     
     /**
@@ -65,6 +55,9 @@ public abstract class ChessPiece
         
         //move the peice to the new location and save whatever is in the new postion so we can replace it after
         ChessPiece captured = move(board, newPosition);
+        
+        int kingX = king.position.getX();
+        int kingY = king.position.getY();
  
         /************************
          ***** BISHOP/QUEEN *****
@@ -77,13 +70,13 @@ public abstract class ChessPiece
                 try
                 {
                     //find the next occupied diagnal position
-                    while(board[king.position.getX()+x*index][king.position.getY()+y*index] == null) { index++; }
-                    int nextX = king.position.getX()+x*index;
-                    int nextY = king.position.getY()+y*index;
+                    while(board[kingX+x*index][kingY+y*index] == null) { index++; }
+                    int nextX = kingX+x*index;
+                    int nextY = kingY+y*index;
                     //String aaa = board[nextX][nextY].getAcsiiCode();
                     if(board[nextX][nextY].color != this.color)
                     {
-                        if("B".equals(board[nextX][nextY].getAcsiiCode()) || "Q".equals(board[nextX][nextY].getAcsiiCode()))
+                        if(Bishop.acsiiCode.equals(board[nextX][nextY].getAcsiiCode()) || Queen.acsiiCode.equals(board[nextX][nextY].getAcsiiCode()))
                         {
                             //the king is in jeopardy. reset piece locations
                             resetPositions(board, originalPosition, newPosition, captured);
@@ -106,12 +99,12 @@ public abstract class ChessPiece
             try
             {
                 //find the next occupied vertical position
-                while(board[king.position.getX()+x*index][king.position.getY()] == null) { index++; }
-                int nextX = king.position.getX()+x*index;
-                int nextY = king.position.getY();
+                while(board[kingX+x*index][kingY] == null) { index++; }
+                int nextX = kingX+x*index;
+                int nextY = kingY;
                 if(board[nextX][nextY].color != this.color)
                 {
-                    if("R".equals(board[nextX][nextY].getAcsiiCode()) || "Q".equals(board[nextX][nextY].getAcsiiCode()))
+                    if(Rook.acsiiCode.equals(board[nextX][nextY].getAcsiiCode()) || Queen.acsiiCode.equals(board[nextX][nextY].getAcsiiCode()))
                     {
                         //the king is in jeopardy. reset piece locations
                         resetPositions(board, originalPosition, newPosition, captured);
@@ -128,12 +121,12 @@ public abstract class ChessPiece
             try
             {
                 //find the next occupied horizontal position
-                while(board[king.position.getX()][king.position.getY()+y*index] == null) { index++; }
-                int nextX = king.position.getX();
-                int nextY = king.position.getY()+y*index;
+                while(board[kingX][kingY+y*index] == null) { index++; }
+                int nextX = kingX;
+                int nextY = kingY+y*index;
                 if(board[nextX][nextY].color != this.color)
                 {
-                    if("R".equals(board[nextX][nextY].getAcsiiCode()) || "Q".equals(board[nextX][nextY].getAcsiiCode()))
+                    if(Rook.acsiiCode.equals(board[nextX][nextY].getAcsiiCode()) || Queen.acsiiCode.equals(board[nextX][nextY].getAcsiiCode()))
                     {
                         //the king is in jeopardy. reset piece locations
                         resetPositions(board, originalPosition, newPosition, captured);
@@ -151,13 +144,13 @@ public abstract class ChessPiece
         {
             for(int y=-1; y<=1; y+=2)
             {
-                int nextX = king.position.getX()+x*2;
-                int nextY = king.position.getY()+y;
+                int nextX = kingX+x*2;
+                int nextY = kingY+y;
                 try
                 {
                     if(board[nextX][nextY] != null)
                     {
-                        if(board[nextX][nextY].color != this.color && "K".equals(board[nextX][nextY].getAcsiiCode()))
+                        if(board[nextX][nextY].color != this.color && Knight.acsiiCode.equals(board[nextX][nextY].getAcsiiCode()))
                         {
                             //the king is in jeopardy. reset piece locations
                             resetPositions(board, originalPosition, newPosition, captured);
@@ -166,13 +159,13 @@ public abstract class ChessPiece
                     }
                 }catch(IndexOutOfBoundsException e) {}
                 
-                nextX = king.position.getX()+x;
-                nextY = king.position.getY()+y*2;
+                nextX = kingX+x;
+                nextY = kingY+y*2;
                 try
                 {
                     if(board[nextX][nextY] != null)
                     {
-                        if(board[nextX][nextY].color != king.color && "K".equals(board[nextX][nextY].getAcsiiCode()))
+                        if(board[nextX][nextY].color != king.color && Knight.acsiiCode.equals(board[nextX][nextY].getAcsiiCode()))
                         {
                             //the king is in jeopardy. reset piece locations
                             resetPositions(board, originalPosition, newPosition, captured);
@@ -187,31 +180,61 @@ public abstract class ChessPiece
          ******** PAWN ********
          **********************/
         for(int horizontal=-1; horizontal<=1; horizontal+=2)
+        {  
+            try
+            {
+                if(king.color == COLOR.BLACK)
+                {
+                    int nextX = kingX-1;
+                    int nextY = kingY+horizontal;
+                    if(board[nextX][nextY] != null && king.color != board[nextX][nextY].color)
+                    {
+                        if(Pawn.acsiiCode.equals(board[nextX][nextY].getAcsiiCode()))
+                        {
+                            //the king is in jeopardy. reset piece locations
+                            resetPositions(board, originalPosition, newPosition, captured);
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    int nextX = kingX+1;
+                    int nextY = kingY+horizontal;
+                    if(board[nextX][nextY] != null && king.color != board[nextX][nextY].color)
+                    {
+                        if(Pawn.acsiiCode.equals(board[nextX][nextY].getAcsiiCode()))
+                        {
+                            //the king is in jeopardy. reset piece locations
+                            resetPositions(board, originalPosition, newPosition, captured);
+                            return false;
+                        }
+                    }
+                }
+            }catch(IndexOutOfBoundsException e) {}
+        }
+        
+        /**********************
+         ******** KING ********
+         **********************/
+        for(int x=kingX-1; x<=kingX+1; x++)
         {
-            if(king.color == COLOR.BLACK)
+            for(int y=kingY-1; y<=kingY+1; y++)
             {
-                int nextX = king.position.getX()-1;
-                int nextY = king.position.getY()+horizontal;
-                if(board[nextX][nextY] != null && king.color != board[nextX][nextY].color)
+                try
                 {
-                    //the king is in jeopardy. reset piece locations
-                    resetPositions(board, originalPosition, newPosition, captured);
-                    return false;
-                }
-            }
-            else
-            {
-                int nextX = king.position.getX()+1;
-                int nextY = king.position.getY()+horizontal;
-                if(board[nextX][nextY] != null && king.color != board[nextX][nextY].color)
-                {
-                    //the king is in jeopardy. reset piece locations
-                    resetPositions(board, originalPosition, newPosition, captured);
-                    return false;
-                }
+                    if(board[x][y] != null && this.color != board[x][y].color)
+                    {
+                        if(King.acsiiCode.equals(board[x][y].getAcsiiCode()))
+                        {
+                            //the king is in jeopardy. reset piece locations
+                            resetPositions(board, originalPosition, newPosition, captured);
+                            return false;
+                        }
+                    }
+                }catch(IndexOutOfBoundsException e) {}
             }
         }
-
         
         //the king is safe. reset piece locations
         resetPositions(board, originalPosition, newPosition, captured);
@@ -272,30 +295,5 @@ public abstract class ChessPiece
         }
         return king;
     }
-    
-    /**
-     * Output the contents of the board for debugging
-     * @param board 
-     */
-    public void printBoard(ChessPiece[][] board)
-    {                        
-        for (int x=0; x<board.length; x++)
-        {
-           for (int y=0; y<board[0].length; y++)
-           {
-                if(board[x][y] == null)
-                {
-                    System.out.print("*" + " ");
-                }
 
-                else
-                {
-                    System.out.print(board[x][y].getAcsiiCode() + " ");
-                }
-           }
-           System.out.println();
-        }
-        
-        System.out.println();System.out.println();System.out.println();System.out.println();
-    }
 }
