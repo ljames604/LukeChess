@@ -26,6 +26,22 @@ public class King extends ChessPiece
     }
     
     /**
+     * Implementation of parent abstract method.
+     * Even though the acsiiCode is a public abstract class variable,
+     * We need to be able to get the asciiCode statically as well as
+     * through the instantiated object. That is why the acsiiCode is
+     * declared in the inherited class not the abstract parent. Declaring 
+     * it in the parent ChessPiece class would force all implemented classes
+     * to have the same acsii code.
+     * @return 
+     */
+    @Override
+    public String getAcsiiCode()
+    {
+        return this.acsiiCode;
+    }
+    
+    /**
      * Populate all kings on board in starting position 
      * @param board
      */
@@ -75,11 +91,25 @@ public class King extends ChessPiece
         return available;
     }
     
-    //get the piece's ASCii code
+    /**
+     * TO DO!!! the ChessBoard should be an extension of an interface that has
+     * methods available to get the position of the king. Every time the king moves
+     * the class variable that stores its postions on the board should also be updated.
+     * This will save valuable processing time.
+     * 
+     * @param board
+     * @param newPosition
+     * @return ChessPiece
+     */
     @Override
-    public String getAcsiiCode()
+    public  ChessPiece move(ChessPiece[][] board, Position newPosition)
     {
-        return this.acsiiCode;
+        //first move the piece
+        ChessPiece captured = super.move(board, newPosition);
+        
+        //TO DO! update the board's king position. TO DO!
+        
+        return captured;
     }
     
 }

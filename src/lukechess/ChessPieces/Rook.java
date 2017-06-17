@@ -26,6 +26,22 @@ public class Rook extends ChessPiece
     }
     
     /**
+     * Implementation of parent abstract method.
+     * Even though the acsiiCode is a public abstract class variable,
+     * We need to be able to get the asciiCode statically as well as
+     * through the instantiated object. That is why the acsiiCode is
+     * declared in the inherited class not the abstract parent. Declaring 
+     * it in the parent ChessPiece class would force all implemented classes
+     * to have the same acsii code.
+     * @return 
+     */
+    @Override
+    public String getAcsiiCode()
+    {
+        return this.acsiiCode;
+    }
+    
+    /**
      * Populate all castles on board in starting position
      */
     public static void populate(ChessPiece[][] board)
@@ -105,11 +121,5 @@ public class Rook extends ChessPiece
         return available;
     }
     
-    //get the piece's ASCii code
-    @Override
-    public String getAcsiiCode()
-    {
-        return this.acsiiCode;
-    }
         
 }

@@ -16,7 +16,7 @@ import lukechess.ChessPieces.*;
  */
 public class ChessBoard 
 {
-    //representation of the chess board
+    //two dimentional representation of the chess board
     public static ChessPiece[][] board;
     
     /**

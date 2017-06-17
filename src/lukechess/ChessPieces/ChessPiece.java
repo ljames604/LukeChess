@@ -40,7 +40,23 @@ public abstract class ChessPiece
     }
     
     /**
-     * Check is a piece move causes the king to be in check
+     * Check if a piece move causes jeopardy to their king.
+     * There are two ways to do this but only one right way.
+     * 
+     * Firstly, we could reuse each piece's "getAvailablePositions" method, 
+     * from the opposite color, and see if any of them intersect with the king. 
+     * This means each piece has to check all it's available moves and report 
+     * back to the king. The king then determines if the move will put him in 
+     * jeopardy based on his position. The individual piece's move algorithm would 
+     * be reusable but would cause many more unnecessary calculations.
+     * 
+     * Secondly, we could have the king itself check for moves that would put him himself 
+     * in jeopardy. This means the king would delegate to the pieces where they are 
+     * allowed to move instead of the pieces reporting all their available positions 
+     * back to the king. This method greatly decreases valuable processing time.
+     * 
+     * TODO! each section of this method should be separated into its own method.
+     * 
      * @param board
      * @param newPosition
      * @return Boolean
@@ -258,6 +274,7 @@ public abstract class ChessPiece
      * Move the piece on the board
      * @param board
      * @param newPosition 
+     * @return ChessPiece (any captured piece from the move)
      */
     public ChessPiece move(ChessPiece[][] board, Position newPosition)
     {    
