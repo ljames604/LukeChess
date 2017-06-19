@@ -15,7 +15,7 @@ public class Position
 {
     /**
      * These are for user interfacing. 
-     * Example... a user would select "A5" not board[0][4].
+     * Example : A user would select "A5" not board[0][4].
      **/
     public static final Map<String, Integer> alpha = new HashMap<String, Integer>();
     public static final Map<Integer, Integer> numeric = new HashMap<Integer, Integer>(); ;
@@ -41,13 +41,13 @@ public class Position
     private void assignHashMap()
     {
         alpha.put("A", 0);
-        alpha.put("A", 1);
-        alpha.put("A", 2);
-        alpha.put("A", 3);
-        alpha.put("A", 4);
-        alpha.put("A", 5);
-        alpha.put("A", 6);
-        alpha.put("A", 7);
+        alpha.put("B", 1);
+        alpha.put("C", 2);
+        alpha.put("D", 3);
+        alpha.put("E", 4);
+        alpha.put("F", 5);
+        alpha.put("G", 6);
+        alpha.put("H", 7);
         
         numeric.put(1,0);
         numeric.put(2,1);
@@ -84,8 +84,18 @@ public class Position
         this.y = yPosition;
     }
     
+    public void set(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
     
-    public void setAlphaNumeric(int x, String y)
+    /**
+     * Sets the variables by actual human board rules; letter and number.
+     * @param y
+     * @param x 
+     */
+    public void setAlphaNumeric(String y, int x)
     {
         this.y = numeric.get(x);
         this.x = alpha.get(y);

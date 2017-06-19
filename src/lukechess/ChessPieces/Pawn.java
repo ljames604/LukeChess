@@ -77,7 +77,19 @@ public class Pawn extends ChessPiece
             {
                 //add to available positions
                 Position moveTo = new Position(this.position.getX()-1, this.position.getY());
-                available.add(moveTo);
+                if(board[moveTo.getX()][moveTo.getY()] == null && isKingSafe(board, moveTo))
+                {
+                    available.add(moveTo);
+                }
+                //check for first move
+                if(this.position.getX() == board.length -2)
+                {
+                    Position firstMove = new Position(this.position.getX()-2, this.position.getY());
+                    if(board[firstMove.getX()][firstMove.getY()] == null && isKingSafe(board, firstMove))
+                    {
+                        available.add(firstMove);
+                    }
+                }
             }
         }
         else
@@ -86,7 +98,19 @@ public class Pawn extends ChessPiece
             {
                 //add to available positions
                 Position moveTo = new Position(this.position.getX()+1, this.position.getY());
-                available.add(moveTo);
+                if(board[moveTo.getX()][moveTo.getY()] == null && isKingSafe(board, moveTo))
+                {
+                    available.add(moveTo);
+                }
+                //check for first move
+                if(this.position.getX() == 1)
+                {
+                    Position firstMove = new Position(this.position.getX()+2, this.position.getY());
+                    if(board[firstMove.getX()][firstMove.getY()] == null && isKingSafe(board, firstMove))
+                    {
+                        available.add(firstMove);
+                    }
+                }
             }
         }
         //check for capture moves
@@ -102,7 +126,10 @@ public class Pawn extends ChessPiece
                     {
                         //add to available positions
                         Position moveTo = new Position(this.position.getX()+1, this.position.getY());
-                        available.add(moveTo);
+                        if(isKingSafe(board, moveTo))
+                        {
+                            available.add(moveTo);
+                        }
                     }
                 }
                 else
@@ -113,7 +140,10 @@ public class Pawn extends ChessPiece
                     {
                         //add to available positions
                         Position moveTo = new Position(this.position.getX()+1, this.position.getY());
-                        available.add(moveTo);
+                        if(isKingSafe(board, moveTo))
+                        {
+                            available.add(moveTo);
+                        }
                     }
                 }
             }catch(IndexOutOfBoundsException e) {}
@@ -133,14 +163,12 @@ public class Pawn extends ChessPiece
      * @return ChessPiece
      */
     @Override
-    public  ChessPiece move(ChessPiece[][] board, Position newPosition)
+    public  ChessPiece move(ChessPiece[][] board, int x, int y)
     {
         //first move the piece
-        ChessPiece captured = super.move(board, newPosition);
+        ChessPiece captured = super.move(board, x, y);
         
-        //then check for queen promotion
-        int x = this.position.getX();
-        int y = this.position.getY();
+        //now we check for queen promotion...
         
         //if black, check if Y position equals board (top of board).
         if(this.color == COLOR.BLACK)
@@ -164,4 +192,5 @@ public class Pawn extends ChessPiece
         //if conditions are met, change the pawn to a queen.
         return captured;
     }
+    
 }

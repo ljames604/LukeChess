@@ -20,6 +20,15 @@ public class ChessBoard
     public static ChessPiece[][] board;
     
     /**
+     * These two intergers range from 0-64 (because 8x8=64).
+     * To get the X position, divide X by 8. To get the Y position,
+     * monoluse blackKingPos by 8... Example, board[blackKingPos/8][whiteKingPos%8
+     * This will save time opposed to iterating through the whole 
+     * board to find the king every time.
+     */
+     int  blackKingPos, whiteKingPos;
+    
+    /**
      * ChessBoard constructor
      */
     public ChessBoard()

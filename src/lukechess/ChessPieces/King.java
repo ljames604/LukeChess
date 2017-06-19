@@ -98,16 +98,17 @@ public class King extends ChessPiece
      * This will save valuable processing time.
      * 
      * @param board
-     * @param newPosition
+     * @param x
+     * @param y
      * @return ChessPiece
      */
     @Override
-    public  ChessPiece move(ChessPiece[][] board, Position newPosition)
+    public  ChessPiece move(ChessPiece[][] board, int x, int y)
     {
         //first move the piece
-        ChessPiece captured = super.move(board, newPosition);
+        ChessPiece captured = super.move(board, x, y);
         
-        //TO DO! update the board's king position. TO DO!
+        //TO DO! update the board's king position in the ChessBoard variable. TO DO!
         
         return captured;
     }

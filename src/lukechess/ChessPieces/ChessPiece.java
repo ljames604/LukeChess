@@ -70,7 +70,7 @@ public abstract class ChessPiece
         Position originalPosition = new Position(position.getX(), position.getY());
         
         //move the peice to the new location and save whatever is in the new postion so we can replace it after
-        ChessPiece captured = move(board, newPosition);
+        ChessPiece captured = move(board, newPosition.getX(), newPosition.getY());
         
         int kingX = king.position.getX();
         int kingY = king.position.getY();
@@ -264,9 +264,9 @@ public abstract class ChessPiece
      * @param newPos
      * @param captured 
      */
-    private void resetPositions(ChessPiece[][] board, Position oldPos, Position newPos, ChessPiece captured)
+    protected void resetPositions(ChessPiece[][] board, Position oldPos, Position newPos, ChessPiece captured)
     {
-        move(board, oldPos);
+        move(board, oldPos.getX(), oldPos.getY());
         board[newPos.getX()][newPos.getY()] = captured;
     }
     
@@ -276,18 +276,18 @@ public abstract class ChessPiece
      * @param newPosition 
      * @return ChessPiece (any captured piece from the move)
      */
-    public ChessPiece move(ChessPiece[][] board, Position newPosition)
+    public ChessPiece move(ChessPiece[][] board, int x, int y)
     {    
         //remove the piece from old location
         board[this.position.getX()][this.position.getY()] = null;
         
         //set the coordenence of new postion for the peice
-        this.position.setX(newPosition.getX());
-        this.position.setY(newPosition.getY());
+        this.position.set(x,y);
+        //.position.setY(newPosition.getY());
         
         //place the piece in the new postion on the board
-        ChessPiece captured = board[newPosition.getX()][newPosition.getY()];
-        board[newPosition.getX()][newPosition.getY()] = this;
+        ChessPiece captured = board[x][y];
+        board[x][y] = this;
         
         return captured;
     }
