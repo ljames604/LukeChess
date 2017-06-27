@@ -6,6 +6,7 @@
 package lukechess.ChessPieces;
 
 import java.util.List;
+import static lukechess.ChessBoard.board;
 /**
  *
  * @author Luke
@@ -65,7 +66,7 @@ public abstract class ChessPiece
     {    
         //find the king (needs to be changed)
         ChessPiece king = this.findKing(board); // TODO !! save the kings postion in a class vaiable in the ChessBoard to save time
-        
+
         //save the original position
         Position originalPosition = new Position(position.getX(), position.getY());
         
@@ -264,7 +265,7 @@ public abstract class ChessPiece
      * @param newPos
      * @param captured 
      */
-    protected void resetPositions(ChessPiece[][] board, Position oldPos, Position newPos, ChessPiece captured)
+    public void resetPositions(ChessPiece[][] board, Position oldPos, Position newPos, ChessPiece captured)
     {
         move(board, oldPos.getX(), oldPos.getY());
         board[newPos.getX()][newPos.getY()] = captured;
@@ -311,6 +312,28 @@ public abstract class ChessPiece
             }
         }
         return king;
+    }
+    
+    public void printBoard(ChessPiece[][] board)
+    {                        
+        for (int x=0; x<board.length; x++)
+        {
+           for (int y=0; y<board[0].length; y++)
+           {
+                if(board[x][y] == null)
+                {
+                    System.out.print("*" + " ");
+                }
+
+                else
+                {
+                    System.out.print(board[x][y].getAcsiiCode() + " ");
+                }
+           }
+           System.out.println();
+        }
+        
+        System.out.println();System.out.println();System.out.println();System.out.println();
     }
 
 }

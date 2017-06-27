@@ -92,4 +92,146 @@ public class ChessBoard
         
         System.out.println();System.out.println();System.out.println();System.out.println();
     }
+    
+    public HashMap<ChessPiece, Position> getAvailableMoves(boolean side)
+    {
+        HashMap<ChessPiece, Position> moves = new HashMap();
+        for(int i=0; i<63; i++)
+        {
+            int x = i/8;
+            int y = i%8;
+            //try
+            //{
+                if(side)
+                {
+                    if(board[x][y] != null && board[x][y].getColor() == ChessPiece.COLOR.BLACK)
+                    {
+                        //ChessPiece deleteForDebug = board[x][y];
+                        List<Position> positions = board[x][y].getAvailableMoves(board);
+                        for (Position pos : positions) 
+                        {
+                            moves.put(board[x][y], pos);
+                        }
+                    }
+                }
+                else
+                {
+                    if(board[x][y] != null && board[x][y].getColor() == ChessPiece.COLOR.WHITE)
+                    {
+                        List<Position> positions = board[x][y].getAvailableMoves(board);
+                        for (Position pos : positions) 
+                        {
+                            moves.put(board[x][y], pos);
+                        }
+                    }
+                }
+            //}catch(IndexOutOfBoundsException e) {}
+        }
+        
+        return moves;
+    }
+    
+//    public void miniMax(int depth, boolean maximizer)
+//    {
+//        maxi(depth, maximizer);
+//    }
+//    
+//    public int mini(int depth, boolean maximizer)
+//    {
+//        if(depth == 0) { return 123; }
+//        Map<ChessPiece, Position> availableMoves = getAvailableMoves(maximizer);
+//        int max = 0;
+//        for(Map.Entry<ChessPiece, Position> entry : availableMoves.entrySet()) 
+//        {
+//                ChessPiece piece = entry.getKey();
+//                Position pos = entry.getValue();
+//                printBoard();
+//                piece.move(board, pos.getX(), pos.getY());
+//                maximizer = !maximizer;
+//                //countMoves++;
+//                printBoard();
+//                maxi(depth-1, maximizer);
+//        }
+//        return 123;
+//    }
+//    public int maxi(int depth, boolean maximizer)
+//    {
+//        if(depth == 0) { return 123; }
+//        Map<ChessPiece, Position> availableMoves = getAvailableMoves(maximizer);
+//        int min = 0;
+//        for(Map.Entry<ChessPiece, Position> entry : availableMoves.entrySet()) 
+//        {
+//                ChessPiece piece = entry.getKey();
+//                Position pos = entry.getValue();
+//                printBoard();
+//                piece.move(board, pos.getX(), pos.getY());
+//                maximizer = !maximizer;
+//                //countMoves++;
+//                printBoard();
+//                mini(depth-1, maximizer);
+//        }
+//        return 123;
+//    }
+    
+    public int miniMax(int depth, boolean maximizer)
+    {
+        if(depth == 0) { return 123; }
+        int countMoves = 0;
+        //while(depth > 0)
+        //{
+            Map<ChessPiece, Position> availableMoves = getAvailableMoves(maximizer);
+            printBoard();
+            int bestMove = 0;
+            for(Map.Entry<ChessPiece, Position> entry : availableMoves.entrySet()) 
+            {
+                
+                ChessPiece piece = entry.getKey();
+                Position pos = entry.getValue();
+                Position oldMove = new Position(piece.getPosition().getX(),piece.getPosition().getY());
+                printBoard();
+                ChessPiece captured = piece.move(board, pos.getX(), pos.getY());
+                countMoves++;
+                printBoard();
+                miniMax(depth-1, !maximizer);
+                //piece.resetPositions(this.board, oldMove, pos, captured);
+            }
+       // }
+        
+        return 234;
+    }
+    
+//    public void miniMax(ChessPiece node, int depth,  boolean maximisingPlayer)
+//    {         
+//        while(depth > 0)
+//        {
+//            if(maximisingPlayer)
+//            {
+//                array<Positions> moves = this.getAvailableMoves(maximisingPlayer);
+//                int bestMove = 0;
+//                foreach(moves as move)
+//                {
+//                    piece.makeMove(move);
+//                    maximisingPlayer ^= maximisingPlayer;
+//                    HashMap leafNodes = miniMax(move, depth-1, maximisingPlayer);
+//                    int topEvaluation = max(evaluateBoards(leafNodes));
+//                    piece.undoMove(move);
+//                    return topEvaluation
+//                }
+//            }
+//            else
+//            {
+//                array<Positions> moves = this.getAvailableMoves(maximisingPlayer);
+//                int bestMove = 0;
+//                foreach(moves as move)
+//                {
+//                    piece.makeMove(move);
+//                    maximisingPlayer ^= maximisingPlayer;
+//                    HashMap leafNodes = miniMax(move, depth-1, maximisingPlayer);
+//                    int bottomEvaluation = min(evaluateBoards(leafNodes));
+//                    piece.undoMove(move);
+//                    return bottomEvaluation;
+//                }
+//            }
+//        }
+//    }
 }

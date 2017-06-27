@@ -51,7 +51,7 @@ public class Knight extends ChessPiece
         //top right
         board[0][6] = new Knight(ChessPiece.COLOR.WHITE, 0,6); //0,6
         //bottom left
-        board[7][1] = new Knight(ChessPiece.COLOR.BLACK, 4,4); //7,1
+        board[7][1] = new Knight(ChessPiece.COLOR.BLACK, 7,1); //7,1
         //bottom right
         board[7][6] = new Knight(ChessPiece.COLOR.BLACK, 7,6); //7,6
     }

@@ -24,13 +24,9 @@ public class LukeChess {
         ChessBoard b = new ChessBoard();
         ChessPiece[][] board = b.board;
         
-        //ChessPiece.COLOR col = board[6][4].getColor();
+        //[6][4].move(b.board, 7, 4);
         
-        board[6][4].move(b.board, 7, 4);
-        
-        //ChessPiece.COLOR col2 = board[7][4].getColor();
-        
-        
+        b.miniMax(2, true);
         
         
         
